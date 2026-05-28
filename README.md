@@ -26,6 +26,8 @@ python3 generate_labels.py
 ```
 Output: print/labels_a4.pdf
 
+![image](screen.jpg)
+
 Notes
 - Adjust QR_SCALE_FACTOR or TEXT_ZONE_RATIO to change QR/text balance.
 - Margins and BOTTOM_ROW_SHIFT_MM tuned for typical printers — tweak if needed.
