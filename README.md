@@ -24,7 +24,7 @@ Quick setup
 2. Edit START_NUM / END_NUM as needed.
 3. Run:
 ```bash
-python3 105x99-gen-qrcode-rotate.py
+python3 105x99-gen-qrcode-24.py
 ```
 Output: print/labels_a4.pdf
 
