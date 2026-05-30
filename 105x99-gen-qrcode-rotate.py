@@ -199,6 +199,38 @@ for idx, text in enumerate(data_list):
 
 pages.append(current_page)
 
+# ==========================================
+# DEBUG GRID ADDITION AND PDF SAVING
+# ==========================================
+
+DEBUG_GRID = True
+#DEBUG_GRID = False
+
+if DEBUG_GRID:
+    for page in pages:
+        # Create a temporary layer for semi-transparent lines
+        overlay = Image.new("RGBA", page.size, (255, 255, 255, 0))
+        draw = ImageDraw.Draw(overlay)
+        line_color = (255, 0, 255, 100)
+
+        # --- VERTICAL LINES (105 mm and 210 mm) ---
+        x_105mm = int(105 * MM_TO_PX)
+        x_210mm = int(210 * MM_TO_PX) - 1  # Canvas edge
+
+        draw.line([(x_105mm, 0), (x_105mm, A4_HEIGHT)], fill=line_color, width=3)
+        draw.line([(x_210mm, 0), (x_210mm, A4_HEIGHT)], fill=line_color, width=3)
+
+        # --- HORIZONTAL LINES (Block rows: 99 mm and 198 mm) ---
+        y_block1 = int(99 * MM_TO_PX)     # First block row boundary
+        y_block2 = int(198 * MM_TO_PX)    # Second block row boundary
+
+        draw.line([(0, y_block1), (A4_WIDTH, y_block1)], fill=line_color, width=2)
+        draw.line([(0, y_block2), (A4_WIDTH, y_block2)], fill=line_color, width=2)
+
+        # Overlay the lines onto the page
+        page.paste(Image.alpha_composite(page.convert("RGBA"), overlay).convert("RGB"))
+
+# Save the final PDF
 if pages:
     pages[0].save(
         OUTPUT_PDF, 
@@ -209,4 +241,4 @@ if pages:
         save_format="pdf",
         encoder_name="raw"
     )
-    print(f"Done! Stickers rotated 90 degrees, PDF generated successfully.")
+    print(f"Done! PDF generated successfully. Debug lines active: {DEBUG_GRID}")
